@@ -4,19 +4,26 @@
       "heroku-redis",
       "timber-logging"
     ],
+    "buildpacks": [
+        {
+        "url": "https://github.com/weibeld/heroku-buildpack-run"
+        }
+    ],
     "env": {
-      "SIDEBOARD_GITPLUGINS": {
-        "required": false,
-        "description": "A JSON object listing plugins to download into this sideboard instance",
-        "value": "[{\"plugin_directory\": \"uber\", \"git_url\": \"https://github.com/bitbyt3r/ubersystem.git\", \"branch\": \"master\"}]"
-      }
+        "SIDEBOARD_GITPLUGINS": {
+            "required": false,
+            "description": "A JSON object listing plugins to download into this sideboard instance",
+            "value": "[{\"plugin_directory\": \"uber\", \"git_url\": \"https://github.com/bitbyt3r/ubersystem.git\", \"branch\": \"master\"}]"
+        },
+        "BUILDPACK_RUN": {
+            "required": false,
+            "description": "This command is run at buildtime to install dependent plugins.",
+            "value": "python setup.py fetchplugins"
+        }
     },
     "name": "sideboard",
     "description": "Open source event management software, based on CherryPy and Sideboard.",
     "repository": "https://github.com/bitbyt3r/sideboard",
     "keywords": ["python", "event management"],
-    "stack": "heroku-18",
-    "scripts": {
-        "build": "python setup.py fetchplugins"
-    }
+    "stack": "heroku-18"
   }
