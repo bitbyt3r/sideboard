@@ -16,6 +16,12 @@ with open(os.path.join(__here__, pkg_name, '_version.py')) as version:
 def fetchgit():
     # SIDEBOARD_GITPLUGINS is a json list of objects for each plugin
     # {"plugin_directory": "uber", "git_url": "https://github.com/bitbyt3r/ubersystem.git", "branch": "master"}
+    if 'ENV_DIR' in os.environ:
+        env_dir = os.environ['ENV_DIR']
+        env_file = os.path.join(env_dir, "SIDEBOARD_GITPLUGINS")
+        if os.path.isfile(env_file):
+            with open(env_file, "r") as FILE:
+                os.environ['SIDEBOARD_GITPLUGINS'] = FILE.read()
     print("Fetching git plugins...")
     gitplugins = json.loads(os.environ.get('SIDEBOARD_GITPLUGINS', '[]'))
     print("Found {} plugins".format(len(gitplugins)))
