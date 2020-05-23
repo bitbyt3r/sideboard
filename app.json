@@ -1,0 +1,19 @@
+{
+    "addons": [
+      "heroku-postgresql",
+      "heroku-redis",
+      "timber-logging"
+    ],
+    "env": {
+      "SIDEBOARD_GITPLUGINS": {
+        "required": false,
+        "description": "A JSON object listing plugins to download into this sideboard instance",
+        "value": "[{\"plugin_directory\": \"uber\", \"git_url\": \"https://github.com/bitbyt3r/ubersystem.git\", \"branch\": \"master\"}]"
+      }
+    },
+    "name": "sideboard",
+    "description": "Open source event management software, based on CherryPy and Sideboard.",
+    "repository": "https://github.com/bitbyt3r/sideboard",
+    "keywords": ["python", "event management"],
+    "stack": "heroku-18"
+  }
