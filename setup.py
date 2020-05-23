@@ -19,8 +19,7 @@ def fetchgit():
     print("Fetching git plugins...")
     gitplugins = json.loads(os.environ.get('SIDEBOARD_GITPLUGINS', '[]'))
     print("Found {} plugins".format(len(gitplugins)))
-    if not gitplugins:
-        print(os.environ.get('SIDEBOARD_PLUGINS', ''))
+    print(os.environ)
     for gitplugin in gitplugins:
         plugin_directory = ""
         if 'plugin_directory' in gitplugin:
