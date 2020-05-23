@@ -15,5 +15,8 @@
     "description": "Open source event management software, based on CherryPy and Sideboard.",
     "repository": "https://github.com/bitbyt3r/sideboard",
     "keywords": ["python", "event management"],
-    "stack": "heroku-18"
+    "stack": "heroku-18",
+    "scripts": {
+        "build": "python setup.py fetchplugins"
+    }
   }

@@ -13,25 +13,24 @@ __here__ = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(__here__, pkg_name, '_version.py')) as version:
     exec(version.read())
 
-class InstallWrapper(install):
-    """This wraps the setup.py install command and allows us to pull dependencies before
-    the install runs.
-    """
+def fetchgit():
+    # SIDEBOARD_GITPLUGINS is a json list of objects for each plugin
+    # {"plugin_directory": "uber", "git_url": "https://github.com/bitbyt3r/ubersystem.git", "branch": "master"}
+    gitplugins = json.loads(os.environ.get('SIDEBOARD_GITPLUGINS', '[]'))
+    for gitplugin in gitplugins:
+        plugin_directory = ""
+        if 'plugin_directory' in gitplugin:
+            plugin_directory = os.path.join(__here__, "plugins", gitplugin['plugin_directory'])
+        branch = gitplugin.get("branch", "master")
+        clone_cmd = "git clone --depth=1 --branch {} {} {}".format(branch, gitplugin['git_url'], plugin_directory)
+        os.system(clone_cmd)
+        requirements_file = os.path.join(plugin_directory, "requirements.txt")
+        if os.path.isfile(requirements_file):
+            os.system("pip install -r {}".format(requirements_file))
+
+class FetchCommand(install):
     def run(self):
-        # SIDEBOARD_GITPLUGINS is a json list of objects for each plugin
-        # {"plugin_directory": "uber", "git_url": "https://github.com/bitbyt3r/ubersystem.git", "branch": "master"}
-        gitplugins = json.loads(os.environ.get('SIDEBOARD_GITPLUGINS', '[]'))
-        for gitplugin in gitplugins:
-            plugin_directory = ""
-            if 'plugin_directory' in gitplugin:
-                plugin_directory = os.path.join(__here__, "plugins", gitplugin['plugin_directory'])
-            branch = gitplugin.get("branch", "master")
-            clone_cmd = "git clone --depth=1 --branch {} {} {}".format(branch, gitplugin['git_url'], plugin_directory)
-            os.system(clone_cmd)
-            requirements_file = os.path.join(plugin_directory, "requirements.txt")
-            if os.path.isfile(requirements_file):
-                os.system("pip install -r {}".format(requirements_file))
-        install.run(self)
+        fetchgit()
 
 setup_requires = {'setup_requires': ['distribute']} if sys.version_info[0] == 2 else {}
 setup(
@@ -69,7 +68,7 @@ setup(
         'perftrace': ['python-prctl>=1.6.1', 'psutil>=4.3.0']
     },
     cmdclass={
-        'install': InstallWrapper
+        'fetchplugins': FetchCommand
     },
     **setup_requires
 )
