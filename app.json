@@ -21,7 +21,7 @@
         "BUILDPACK_RUN": {
             "required": false,
             "description": "This command is run at buildtime to install dependent plugins.",
-            "value": "python setup.py fetchplugins"
+            "value": "python setup.py fetchplugins:sep insert_admin"
         }
     },
     "name": "sideboard",
