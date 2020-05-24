@@ -17,6 +17,7 @@ def fetchgit():
     # SIDEBOARD_GITPLUGINS is a json list of objects for each plugin
     # {"plugin_directory": "uber", "git_url": "https://github.com/bitbyt3r/ubersystem.git", "branch": "master"}
     if 'ENV_DIR' in os.environ:
+        # Heroku passes environment variables to buildpacks as files...
         env_dir = os.environ['ENV_DIR']
         env_file = os.path.join(env_dir, "SIDEBOARD_GITPLUGINS")
         if os.path.isfile(env_file):
@@ -25,7 +26,6 @@ def fetchgit():
     print("Fetching git plugins...")
     gitplugins = json.loads(os.environ.get('SIDEBOARD_GITPLUGINS', '[]'))
     print("Found {} plugins".format(len(gitplugins)))
-    print(os.environ)
     for gitplugin in gitplugins:
         plugin_directory = ""
         if 'plugin_directory' in gitplugin:

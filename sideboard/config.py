@@ -265,6 +265,17 @@ def parse_config(requesting_file_path, is_plugin=True):
             if priority >= sideboard_config['default_url_priority']:
                 sideboard_config['default_url'] = config['default_url']
 
+    env_overrides = [
+        ('PORT', ('cherrypy', 'server.socket_port')),
+    ]
+    for override in env_overrides:
+        if override[0] in os.environ:
+            base = config
+            for i in override[1][:-1]:
+                if not i in base:
+                    base[i] = {}
+                base = base[i]
+            base[override[1][-1]] = os.environ[override[0]]
     return config
 
 config = parse_config(__file__, is_plugin=False)
