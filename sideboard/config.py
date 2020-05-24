@@ -265,8 +265,20 @@ def parse_config(requesting_file_path, is_plugin=True):
             if priority >= sideboard_config['default_url_priority']:
                 sideboard_config['default_url'] = config['default_url']
 
+    if 'REDIS_URL' in os.environ:
+        redis = os.environ['REDIS_URL']
+        parts = redis.split(":")
+        os.environ['REDIS_URL_USER'] = parts[1].split("//")[1]
+        os.environ['REDIS_URL_PASS'] = parts[2].split("@")[0]
+        os.environ['REDIS_URL_HOST'] = parts[2].split("@")[1]
+        os.environ['REDIS_URL_PORT'] = parts[3]
+
     env_overrides = [
         ('PORT', ('cherrypy', 'server.socket_port')),
+        ('DATABASE_URL', ('secret', 'sqlalchemy_url')),
+        ('REDIS_URL_HOST', ('cherrypy', 'tools.sessions.host')),
+        ('REDIS_URL_PORT', ('cherrypy', 'tools.sessions.port')),
+        ('REDIS_URL_PASS', ('cherrypy', 'tools.sessions.password')),
     ]
     for override in env_overrides:
         if override[0] in os.environ:
