@@ -1,1 +1,1 @@
-web: python sideboard/run_server.py
+web: sep insert_admin && python sideboard/run_server.py
