@@ -5,3 +5,5 @@ Getting Started
 ---------------
 
 Please read the checked in [docs](https://github.com/magfest/sideboard/blob/master/docs/source/index.rst) for the moment.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
